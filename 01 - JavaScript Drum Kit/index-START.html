@@ -57,7 +57,30 @@
   <audio data-key="75" src="sounds/tom.wav"></audio>
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
+<!-- we're going to make the window listen for a press down of a key -->
 <script>
+
+
+     function playSound(e) {
+     // e.keyCode will get the data key of the attribute you're targetting
+     const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+     const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+     // const key is selecting the class key and then what key was pressed so we can add animation
+     if (!audio) return; //stop the function running if there's no audio associated with the key pressed
+     audio.currentTime = 0; //rewind to the start, you can hit it multiple times without waiting for the audio to finish playing
+    audio.play();
+    key.classList.add('playing');
+  }
+
+  function removeTransition(e) {
+    if (e.propertyName !== 'transform') return; //skip if it's not a transform
+    this.classList.remove('playing');
+  }
+
+  const keys = document.querySelectorAll('.key');
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+  window.addEventListener('keydown', playSound);
+
 
 </script>
 
