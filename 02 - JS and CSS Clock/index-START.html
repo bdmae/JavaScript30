@@ -18,14 +18,14 @@
 
   <style>
     html {
-      background: #018DED url(https://unsplash.it/1500/1000?image=881&blur=5);
-      background-size: cover;
       font-family: 'helvetica neue';
       text-align: center;
       font-size: 10px;
     }
 
     body {
+      background: url(https://images.unsplash.com/photo-1615980251529-f31d82558bf1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=750&q=80);
+      background-size: cover;
       margin: 0;
       font-size: 2rem;
       display: flex;
@@ -47,6 +47,9 @@
         inset 0 0 0 3px #EFEFEF,
         inset 0 0 10px black,
         0 0 10px rgba(0,0,0,0.2);
+      backdrop-filter: blur(1rem);
+      border-radius: 50%;
+      z-index: -1;
     }
 
     .clock-face {
@@ -58,16 +61,44 @@
 
     .hand {
       width: 50%;
-      height: 6px;
-      background: black;
+      height: 6.5px;
+      background: rgb(255, 255, 255);
       position: absolute;
       top: 50%;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      transform-origin: 100%;
+      transform: rotate(90deg);
+      transition: all 0.05s;
+      transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);
+      /* transition timing function cubic bezier allows the ticking effect */
+      /* transform origin allows you to rotate from different points along the x axis */
+      /* by default, transform origin is 50%, so 100% is from the right hand side. */
     }
 
   </style>
 
   <script>
+     const secondHand = document.querySelector('.second-hand');
+     const minHand = document.querySelector('.min-hand');
+     const hourHand = document.querySelector('.hour-hand');
 
+     function setDate() {
+       const now = new Date();
+      //  seconds
+       const seconds = now.getSeconds();
+       const secondsDegrees = ((seconds / 60) * 360) + 90;
+       secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+    //  minutes
+       const minutes = now.getMinutes();
+       const minutesDegrees = ((minutes / 60) * 360) + 90;
+       minHand.style.transform = `rotate(${minutesDegrees}deg)`;
+
+       const hour = now.getHours();
+       const hourDegrees = ((minutes / 12) * 360) + 90;
+       hourHand.style.transform = `rotate(${hourDegrees}deg)`;
+     }
+
+     setInterval(setDate, 1000);
 
   </script>
 </body>
